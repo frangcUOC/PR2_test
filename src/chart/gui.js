@@ -32,7 +32,7 @@ function hideControls(level){
 
     // Ocultem sliders i altres objectes que no faran falta a la narrativa
     document.getElementById("europeIndicators").style.display = "none";
-    document.getElementById("pibSliderContainer").style.right = "80px";
+    document.getElementById("pibSliderContainer").style.right = "125px";
     document.getElementById("pollutantSliderContainer").style.display = "none";
     document.getElementById("demographicFilters").style.display = "none";
     document.getElementById("xModeSliderContainer").style.display = "none";
