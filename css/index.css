@@ -23,7 +23,7 @@ body {
 
     /* Fons d'Europa*/
     background-image:
-            url("/img/Blank_map_of_Europe_cropped.svg"),
+            url("../img/Blank_map_of_Europe_cropped.svg"),
             linear-gradient(90deg, #7292b5 0%, #cedae8 100%);
     background-repeat: no-repeat;
     background-size: cover;
