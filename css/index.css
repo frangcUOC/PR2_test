@@ -11,7 +11,7 @@
  *  - Contenidor de l’iframe
  *
  */
-* { outline: 1px solid red; }
+
 /*Estils de tota la pàgina*/
 body {
     display: flex;
@@ -148,14 +148,14 @@ body {
     text-align: center;
     font-size: 50px;
     font-weight: 700;
-    width: 1600px;
+    width: 1800px;
 }
 
 .page-subtitle {
     text-align: left;
     font-size: 16px;
     font-weight: 300;
-    width: 1600px;
+    width: 1800px;
     margin-left: 35px;
 }
 
@@ -391,7 +391,6 @@ iframe {
     color: #803602;
     font-weight: bold;
 }
-
 
 
 
