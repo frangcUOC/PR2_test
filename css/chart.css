@@ -154,7 +154,7 @@ svg text {
 #pibSliderContainer {
     position: absolute;
     top: 50px;
-    right: -145px;
+    right: -160px;
     height: 300px;
     width: 220px;
     display: flex;
@@ -384,6 +384,7 @@ svg text {
     gap: 50px;
 }
 
+
 #demographicTopRow {
     display: flex;
     flex-direction: row;
@@ -427,7 +428,9 @@ svg text {
     flex-direction: row-reverse;
     align-items: center;
     gap: 12px;
+    width: 100px;
 }
+
 
 /*Etiquetes dels contenidors dels sliders de malaltia i edat*/
 .mode-labels {
@@ -437,6 +440,7 @@ svg text {
     height: 250px;
     font-size: 13px;
 }
+
 
 /*Punt de l'slider de gènere (Chrome)*/
 #sexSlider::-webkit-slider-thumb {
@@ -464,6 +468,10 @@ svg text {
     width: 200px;
     gap: 30px;
     margin-top: 6px;
+}
+
+#diseaseBlock{
+    width:200px;
 }
 
 /*Estils dels contenidors d'edat i malaltia*/
@@ -551,6 +559,10 @@ svg text {
     height: 16px;
     border-radius: 50%;
     border: none;
+}
+
+#sexBlock{
+    margin-right:100px;
 }
 
 /*Estils pels punts del gràfic que han de destacar*/
