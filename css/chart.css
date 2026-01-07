@@ -89,7 +89,7 @@ svg text {
 #basicFilters {
     display: flex;
     position: absolute;
-    margin-left: 1250px;
+    margin-left: 1260px;
     top: 0;
 }
 
@@ -377,7 +377,7 @@ svg text {
 #demographicFilters {
     align-items: center;
     position: absolute;
-    margin-left: 1040px;
+    margin-left: 1050px;
     top: 400px;
     display: flex;
     flex-direction: column;
