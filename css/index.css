@@ -1,0 +1,400 @@
+/**
+ * @fitxer index.css
+ * @descripció Estils principals de la narrativa de la PR2
+ * @autor Francisco Garcia Caparrós
+ * @versió 1
+ *
+ * Contingut:
+ *  - Disseny general del layout
+ *  - Estils de l'iframe
+ *  - Slider de les històries
+ *  - Contenidor de l’iframe
+ *
+ */
+
+/*Estils de tota la pàgina*/
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color:#1f2d3a;
+
+    /* Fons d'Europa*/
+    background-image:
+            url("/img/Blank_map_of_Europe_cropped.svg"),
+            linear-gradient(90deg, #7292b5 0%, #cedae8 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+
+/*Estils de la pàgina de portada*/
+.front-page{
+    position:relative;
+    height: 1080px;
+    color:#1f2d3a;
+    width: 1600px;
+    text-align: center;
+
+}
+
+/* Títols i subtítols de la pàgina d'inici*/
+.front-page__title,
+.front-page__subtitle{
+    position: relative;
+    z-index: 2;
+    margin-top:400px;
+}
+
+.front-page__title {
+    font-size: 50px;
+    font-weight: 700;
+}
+
+.front-page__subtitle {
+    font-size: 32px;
+    font-weight: 400;
+    margin-top: 0;
+}
+
+/*Estis i animacions de la pàgina de conclusions*/
+.conclusions-page{
+    height: 800px;
+}
+
+.conclusions-title{
+    margin-top:150px;
+    padding-bottom: 50px;
+    text-align: center;
+}
+
+.conclusions-inactive{
+    opacity: 0;
+}
+
+.conclusions-active{
+    opacity: 1;
+    transition: opacity 2s ease, transform 1.8s ease;
+}
+
+.conclusions-list{
+    width: 1000px;
+    text-align: justify;
+}
+
+
+/*Seccions d'introdicció del PIB i contaminants*/
+.pollutantContext,
+.pibContext{
+    height: 1000px;
+}
+
+/* Secció de contextos reutilitzable */
+.contextSection {
+    height: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+/* Contingut centrat */
+.contextContent {
+    max-width: 1100px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Títol genèric */
+.context-title,
+.conclusions-title{
+    font-size: 2.4rem;
+    margin-bottom: 15px;
+    color: #1f2d3a;
+}
+
+/* Paràgraf genèric */
+.context-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    color: #3a4a57;
+}
+
+/* Contenidor de qualsevol gràfic de Flourish */
+.flourishContainer {
+    width: 100%;
+    height: 65%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Iframe genèric */
+.flourish-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+}
+
+
+/*Estils dels títol i subtítol*/
+.page-title {
+    text-align: center;
+    font-size: 50px;
+    font-weight: 700;
+    width: 1790px;
+}
+
+.page-subtitle {
+    text-align: left;
+    font-size: 16px;
+    font-weight: 300;
+    width: 1790px;
+    margin-left: 35px;
+}
+
+/* Contenidor de la narrativa */
+.storyContainer {
+    display: flex;
+    margin-top: -125px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px;
+    gap: 10px;
+}
+
+
+
+/*Bloc del iframe amb el títol*/
+.chart-block{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/*Títol del gràfic*/
+.chart-title {
+    width: 1050px;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-left: 350px;
+    position: relative;
+    top: 50px;
+}
+
+/*Contenidor de l'iframe*/
+.iframeContainer {
+    position: relative;
+    z-index: 1;
+}
+
+/*Estils de l'iframe*/
+.chart-iframe,
+iframe {
+    width: 1050px;
+    height: 800px;
+    border: none;
+    display: block;
+}
+
+.sliderStories{
+    margin-left: -100px;
+}
+
+/*Slider per seleccionar les narratives*/
+#storySliderPOLL,
+#storySliderPIB {
+    writing-mode: vertical-lr;
+    -webkit-appearance: none;
+    width: 30px;
+    height: 500px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* Slider Pollution (5 nivells) */
+#storySliderPOLL {
+    background: linear-gradient(
+            to bottom,
+            #9fb4cc 0%,
+            #9fb4cc 20%,
+            #cedae8 20%,
+            #cedae8 40%,
+            #9fb4cc 40%,
+            #9fb4cc 60%,
+            #cedae8 60%,
+            #cedae8 80%,
+            #9fb4cc 80%,
+            #9fb4cc 100%
+    );
+}
+
+/* Slider PIB (4 nivells) */
+#storySliderPIB {
+    background: linear-gradient(
+            to bottom,
+            #9fb4cc 0%,
+            #9fb4cc 25%,
+            #cedae8 25%,
+            #cedae8 50%,
+            #9fb4cc 50%,
+            #9fb4cc 75%,
+            #cedae8 75%,
+            #cedae8 100%
+    );
+}
+
+
+
+
+/* Línia de l'slider (Chrome)*/
+#storySliderPOLL::-webkit-slider-runnable-track,
+#storySliderPIB::-webkit-slider-runnable-track{
+    border-radius: 12px;
+    width: 18px;
+}
+
+/* Línia de l'slider (Firefox) */
+#storySliderPOLL::-moz-range-track,
+#storySliderPIB::-moz-range-track {
+    border-radius: 12px;
+}
+
+/* Punt (thumb) - (Chrome) */
+#storySliderPOLL::-webkit-slider-thumb,
+#storySliderPIB::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    background: #4a6fa3;
+    width: 40px;
+    height: 100px;
+    border-radius: 8px;
+    margin-left: -12px;
+}
+
+/* Punt (thumb) - (Firefox) */
+#storySliderPOLL::-moz-range-thumb,
+#storySliderPIB::-moz-range-thumb {
+    background: #4a6fa3;
+    width: 40px;
+    height: 100px;
+    border: none;
+}
+
+#storySliderPOLL::-webkit-slider-thumb,
+#storySliderPIB::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    background: #4a6fa3;
+    width: 40px;
+    border-radius: 8px;
+    margin-left: -12px;
+}
+
+#storySliderPIB::-webkit-slider-thumb{
+    height: 125px;
+}
+
+/* Punt (thumb) - (Firefox) */
+#storySliderPIB::-moz-range-thumb{
+    height: 125px;
+}
+
+/* Caixes per a les narratives*/
+
+/*Contenidor principal*/
+.story-boxes {
+    position: relative;
+    height: 500px;
+    width: 320px;
+    margin-top: -20px;
+}
+
+.story-box {
+    position: absolute;
+    width: 620px;
+    padding: 15px;
+    background: transparent;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/*Caixes per la primera secció*/
+.story-box[data-level="0"] { top: 0px; }
+.story-box[data-level="1"] { top: 100px; }
+.story-box[data-level="2"] { top: 200px; }
+.story-box[data-level="3"] { top: 300px; }
+.story-box[data-level="4"] { top: 400px; }
+
+/*Caixes per a la segona secció*/
+.story-box[data-level="5"] { top: 5px; }
+.story-box[data-level="6"] { top: 130px; }
+.story-box[data-level="7"] { top: 255px; }
+.story-box[data-level="8"] { top: 380px; }
+
+
+
+.story-box h3 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+}
+
+.story-box p {
+    margin: 0;
+    font-size: 0.9rem;
+    text-align: justify;
+}
+
+/* Estat actiu */
+.story-box.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Estat inactiu */
+.story-box.inactive {
+    opacity: 0.15;
+    transform: scale(0.95);
+}
+
+/* Animació de parpelleig */
+@keyframes blinkSlider {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+/* Per activar el parpalleg parpelleig */
+.slider-blink {
+    animation: blinkSlider 0.8s ease-in-out infinite;
+}
+
+/*Per l'animació de l'scroll*/
+.scrollAnimation {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.scrollAnimation.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/*Color del text que s'ha de resaltar*/
+.red-text-highlighted {
+    color: #803602;
+    font-weight: bold;
+}
+
+
+
+
+
+
+
