@@ -73,6 +73,8 @@ function checkSlider() {
  * Fa que l'slider de les stories parpellegi per cridar l'atenció a l'usuari. S'executa
  * en carregar la pàgina.
  */
+
+history.scrollRestoration = "manual";
 document.addEventListener("DOMContentLoaded", function () {
     // Situem la pàgina al principi de tot
     window.scrollTo(0, 0);
@@ -81,6 +83,16 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("storySliderPOLL").classList.add("slider-blink");
     document.getElementById("storySliderPIB").classList.add("slider-blink");
 });
+
+/**
+ * Per si es carrega des de un mòbil, necessari perquè es vegi el gràfic de contaminants
+ */
+const esMobil = window.matchMedia("(max-width: 768px)").matches;
+
+if (esMobil) {
+    iframePOLL.contentWindow.postMessage({ level: 0 }, "*");
+}
+
 
 /**
  * Fa que les seccions de la narrativa apareguin a mesura que es fa scroll.

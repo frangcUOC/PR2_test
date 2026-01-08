@@ -112,7 +112,7 @@ body {
 /* Títol genèric */
 .context-title,
 .conclusions-title{
-    font-size: 2.4rem;
+    font-size: 50px;
     margin-bottom: 15px;
     color: #1f2d3a;
 }
