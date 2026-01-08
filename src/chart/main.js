@@ -18,10 +18,10 @@
 /**
  * Carrega de dades i crida a les altres funcions que inicialitzen el gràfic
  */
-function init(width, height, margin, options = null){
+function init(width, height, margin, options = null, mode = false){
 
+    storyMode = mode;
     d3.csv(main_dataset).then(raw => {
-
         // Conversió a nombre dels atributs numèrics
         data = raw.map(d => {
             const entry = {};
@@ -39,14 +39,17 @@ function init(width, height, margin, options = null){
         //Guardem el dataset original a la variable global per a la seva reutilització
         original_data = data;
 
-        //Primera càrrega per les emissions
+        //Primera càrrega - Dades inicials i càrrega del slider de contaminants
+        preLoad();
+
+        // Apliquem filtres predefinits
+        if(options != null){
+            currentMode = options[4];
+            setCustomFilters(options);
+        }
+
+        // Apliquem filtres
         applyFilter();
-
-        // Slider vertical del PIB
-        setPibSlider();
-
-        //Slider vertical d'emissions
-        setPollutantSlider();
 
         // Slider vertical de malalties
         setDiseasesSlider();
@@ -54,17 +57,11 @@ function init(width, height, margin, options = null){
         // Dibuixem gràfic
         setupChart(width, height, margin);
 
-        // Actualitzem els colors
-        setPibSliderColors();
-
-        // Si hi ha filtres
-        if (options != null){
-            storyMode = true;
-            setCustomFilters(options);
-        } else {
-            // Iniciem la reproducció sense filtres
-            startAutoplay();
+        // Si està reproduint, reiniciem la reproducció
+        if (isPlaying) {
+            resetAutoPlay()
         }
+        startAutoplay(options);
     });
 }
 /**
@@ -72,31 +69,35 @@ function init(width, height, margin, options = null){
  */
 function setCustomFilters(options){
 
+    let xmodeValue = 0;
+    if(options[4] !== "emissions"){
+        xmodeValue = 1;
+    }
+
     // Filtres predefinits
     document.getElementById("pollutantSlider").value = options[0];
     document.getElementById("ageSlider").value = options[1];
     document.getElementById("sexSlider").value = options[2];
     document.getElementById("diseaseSlider").value = options[3];
-    document.getElementById("xModeSlider").value = options[4];
+    document.getElementById("xModeSlider").value = xmodeValue;
 
     // Assignem els valors
-    document.getElementById("xModeSlider").dispatchEvent(new Event("input"));
     document.getElementById("pollutantSlider").dispatchEvent(new Event("input"));
+    document.getElementById("xModeSlider").dispatchEvent(new Event("input"));
     document.getElementById("ageSlider").dispatchEvent(new Event("input"));
     document.getElementById("sexSlider").dispatchEvent(new Event("input"));
     document.getElementById("diseaseSlider").dispatchEvent(new Event("input"));
 
     mortalityThreshold = options[7];
-    if(options[4] !== 0){
-        currentMode = "pib";
-    }
 
-    // Si està reproduint, reiniciem la reproducció
-    if (isPlaying) {
-        resetAutoPlay()
+    // Gràfic ja carregat, així que reproduïm
+    if(!firstRender){
+        // Si està reproduint, reiniciem la reproducció
+        if (isPlaying) {
+            resetAutoPlay()
+        }
+        startAutoplay(options);
     }
-    // Iniciem la reproducció amb filtres
-    startAutoplay(options);
 }
 
 

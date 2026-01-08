@@ -10,59 +10,72 @@
  */
 
 /**
- * Aplica els filtres i obté el conjunt de dades amb totes les opcions dels sliders seleccionades
+ * Dades inicials i càrrega del slider de contaminants
  */
-function applyFilter() {
+function preLoad(){
 
     // Definició de variables i constants locals necessàries pels filtres
     let allColumns;
 
+    // Assignem el valor del primer any per a la primera càrrega
+    currentYear = d3.min(original_data, d => d.TIME_PERIOD);
+
+    // Calculem el rang global del PIB per càpita
+    globalPIBMin = Math.floor(d3.min(original_data, d => d.PIB_per_capita) / 1000) * 1000;
+    globalPIBMax = Math.ceil(d3.max(original_data, d => d.PIB_per_capita) / 1000) * 1000;
+
+    // Obtenim les columnes i filtrem. Obtindrem el contaminant per poblar l'slider corresponent
+    allColumns = Object.keys(data[0]);
+    pollutantList = allColumns.filter(col => {
+        const isExcluded = [
+            "PIB_per_capita",
+            "mort_rate_100",
+            "TIME_PERIOD",
+            "geo",
+            "Country_name"
+        ].includes(col);
+
+        const looksLikePollutant =
+            /^PM\d+(_\d+)?$/i.test(col) ||
+            /^NOX$/i.test(col) ||
+            /^SOX$/i.test(col) ||
+            /^CO$/i.test(col) ||
+            /^NH3$/i.test(col) ||
+            /^NMVOC$/i.test(col);
+
+        return !isExcluded && looksLikePollutant;
+    });
+
+    // Definim els camps bàsics del nostre conjunt de dades
+    specialFields = {
+        country: "geo",
+        country_name: "Country_name",
+        year: "TIME_PERIOD",
+        mortality: "mort_rate_100",
+        pib: "PIB_per_capita"
+    };
+    //Assignem el contaminant actual mitjançant el seu slider
+    currentPollutant = pollutantList[(pollutantList.length - 1) - (+document.getElementById("pollutantSlider").value)];
+    //Amb les dades bàsiques, es crea l'slider vertical d'emissions
+    setPollutantSlider();
+
+}
+
+/**
+ * Aplica els filtres i obté el conjunt de dades amb totes les opcions dels sliders seleccionades
+ */
+function applyFilter() {
+
+    // Definició de variables locals
+    let result = null;
+
     // Obtenim les dades amb els filtres dels sliders
-    let result = queryFilter(original_data)
+    result = queryFilter(original_data)
 
-
-    // Si és la primera càrrega
-    if (firstRender) {
-
-        // Assignem el valor del primer any per a la primera càrrega
-        currentYear = d3.min(original_data, d => d.TIME_PERIOD);
-
-        // Calculem el rang global del PIB per càpita
-        globalPIBMin = Math.floor(d3.min(original_data, d => d.PIB_per_capita) / 1000) * 1000;
-        globalPIBMax = Math.ceil(d3.max(original_data, d => d.PIB_per_capita) / 1000) * 1000;
-
-        // Obtenim les columnes i filtrem. Obtindrem el contaminant per poblar l'slider corresponent
-        allColumns = Object.keys(data[0]);
-        pollutantList = allColumns.filter(col => {
-            const isExcluded = [
-                "PIB_per_capita",
-                "mort_rate_100",
-                "TIME_PERIOD",
-                "geo",
-                "Country_name"
-            ].includes(col);
-
-            const looksLikePollutant =
-                /^PM\d+(_\d+)?$/i.test(col) ||
-                /^NOX$/i.test(col) ||
-                /^SOX$/i.test(col) ||
-                /^CO$/i.test(col) ||
-                /^NH3$/i.test(col) ||
-                /^NMVOC$/i.test(col);
-
-            return !isExcluded && looksLikePollutant;
-        });
-
-        // Definim els camps bàsics del nostre conjunt de dades
-        specialFields = {
-            country: "geo",
-            country_name: "Country_name",
-            year: "TIME_PERIOD",
-            mortality: "mort_rate_100",
-            pib: "PIB_per_capita"
-        };
+    //Assignem el contaminant actual mitjançant el seu slider
+    if(currentPollutant == null){
+        currentPollutant = pollutantList[(pollutantList.length - 1) - (+document.getElementById("pollutantSlider").value)];
     }
-
     // Actualitzem la mortalitat actual
     currentMaxMortality = d3.max(result, d => d.mort_rate_100);
 
@@ -137,10 +150,12 @@ function queryFilter(base){
         });
     });
 
-    // Actualitzem els valors del PIB per l'escala del seu slider
+    // Actualitzem els valors del pollutants i PIB per l'escala del seu slider
     globalPIBMin = Math.floor(d3.min(result, d => d.PIB_per_capita) / 1000) * 1000;
     globalPIBMax = Math.ceil(d3.max(result, d => d.PIB_per_capita) / 1000) * 1000;
 
+    globalPollMin = d3.min(result, d => d[currentPollutant]);
+    globalPollMax = d3.max(result, d => d[currentPollutant]);
 
     // Si l'usuari no toca l'slider del PIB o està ajustant els altres sliders,
     // l'ajustarem amb els colors de l'escala del PIB

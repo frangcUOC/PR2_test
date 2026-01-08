@@ -85,12 +85,23 @@ svg text {
     font-weight: bold;
 }
 
+/*Títol dels filtres*/
+#filtersTitle {
+    position: absolute;
+    top: 10px;
+    left: 1150px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f2d3a;
+}
+
+
 /* Estils dels filtre de contaminant i PIB*/
 #basicFilters {
     display: flex;
     position: absolute;
     margin-left: 1260px;
-    top: 0;
+    top: 50px;
 }
 
 /* Estils relacionats amb l'slider d'any*/
@@ -226,7 +237,6 @@ svg text {
     right: -10px;
     height: 300px;
     width: 220px;
-    display: none;
     flex-direction: row;
     align-items: center;
     gap: 10px;
@@ -378,7 +388,7 @@ svg text {
     align-items: center;
     position: absolute;
     margin-left: 1050px;
-    top: 400px;
+    top: 450px;
     display: flex;
     flex-direction: column;
     gap: 50px;

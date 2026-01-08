@@ -16,10 +16,7 @@
  */
 function setupChart(width, height, margin) {
 
-    //Constants i variables locals dels sliders i l'índex dels contaminants
-    const slider = document.getElementById("pollutantSlider");
-    const initialIndex = (pollutantList.length - 1) - (+slider.value);
-
+    // Inicialitzem el dibuix del gràfic
     innerWidth = width - margin.left - margin.right;
     innerHeight = height - margin.top - margin.bottom;
     svg = d3.select("#chart")
@@ -28,14 +25,6 @@ function setupChart(width, height, margin) {
         .attr("preserveAspectRatio", "xMidYMid meet");
     chart = svg.append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
-
-
-    // Paleta de colors pels punts del gràfic
-    pibColorScale = d3.scaleLinear()
-        .domain([globalPIBMin, globalPIBMax])
-        .range([color1, color2]);
-
-    currentPollutant = pollutantList[initialIndex];
 
     x = d3.scaleLinear()
         .domain(d3.extent(data, d => d[currentPollutant]))
@@ -64,7 +53,7 @@ function setupChart(width, height, margin) {
         .attr("x", innerWidth / 2)
         .attr("y", innerHeight + 40)
         .attr("text-anchor", "middle")
-        .text(`${currentPollutant.replace("_", " ")} — emissions per càpita (tones/habitant)`);
+        .text(`${currentPollutant.replace("_", " ")} — emissions per càpita (kg/habitant)`);
 
     chart.append("text")
         .attr("class", "y-label")
@@ -94,8 +83,10 @@ function updateChart() {
     let circles = null;
     let enter = null;
     let merged = null;
-    let fillColors = pibColorScale;
     let fillValue = specialFields.pib;
+    let fillScale = d3.scaleLinear().domain([globalPIBMin, globalPIBMax]).range([color1, color2]);
+    let minValue = globalPIBMin;
+    let maxValue = globalPIBMax;
 
     // Constant per a la transició dels punts
     const transition_time = 150;
@@ -137,11 +128,19 @@ function updateChart() {
     // Assigna i actualitza els nous cercles
     merged = enter.merge(circles);
 
-    // Colors dels punts en funció del mode a la narrativa
+    // Colors dels punts en funció del mode a la narrativa. L'escala de colors anirà canviant a mesura
+    // que avancin els anys
     if(currentMode === "emissions" && storyMode){
-        fillColors = getMortalityScaleColor();
-        fillValue = specialFields.mortality;
+        fillScale = d3.scaleLinear()
+            .domain([globalPollMin, globalPollMax])
+            .range([color1, color2]);
+        fillValue = currentPollutant;
+        minValue = globalPollMin;
+        maxValue = globalPollMax;
+
     }
+
+    setPibSliderColors(fillScale, minValue, maxValue);
     // Si és la primera càrrega o una actualització posterior, primer apliquem els atributs comuns
 
     // Actualització de les propietats visuals i valors
@@ -150,7 +149,7 @@ function updateChart() {
         .attr("r", 7)
         .attr("cx", d => x(d[currentPollutant]))
         .attr("cy", d => y(d[specialFields.mortality]))
-        .attr("fill", d => fillColors(d[fillValue]));
+        .attr("fill", d => fillScale(d[fillValue]));
 
     // Si NO és la primera càrrega, afegim els esdeveniments i la transició
     if (!firstRender) {
@@ -172,7 +171,7 @@ function updateChart() {
             // Només animem els atributs que realment canvien
             .attr("cx", d => x(d[currentPollutant]))
             .attr("cy", d => y(d[specialFields.mortality]))
-            .attr("fill", d => fillColors(d[fillValue]));
+            .attr("fill", d => fillScale(d[fillValue]));
     }
 
     // Establim a fals perquè ja s'ha fet la primera càrrega
@@ -216,21 +215,17 @@ function updateAxis(){
     // Actualitzem els dominis de l'escala segons el mode actual
     if (currentMode === "emissions") {
         x.domain(d3.extent(data, d => d[currentPollutant])).nice();
-        // Actualitzem valors de les escales
-        chart.select(".x-axis")
-            .call(d3.axisBottom(x).tickFormat(formatMiles));
-
     } else{
         x.domain(d3.extent(data, d => d.PIB_per_capita)).nice();
-        // Actualitzem valors de les escales
-        chart.select(".x-axis")
-            .call(d3.axisBottom(x).tickFormat(formatMilesNoDec));
     }
 
     // Actualitzem el domini de l'escala de la mortalitat
     y.domain([0, currentMaxMortality]).nice();
 
-
+    // Actualitzem valors de les escales
+    chart.select(".x-axis")
+        .call(d3.axisBottom(x).tickFormat(formatMilesNoDec));
+    
     chart.select(".y-axis")
         .call(d3.axisLeft(y).tickFormat(formatSmart));
 }
@@ -292,12 +287,4 @@ function checkFilters(){
     }
 
     return values;
-}
-
-/**
- * Retorna una escala de colors per omplir els punts del mode de mortalitat
- */
-function getMortalityScaleColor() {
-    return d3.scaleSequential(d3.interpolatePuBu)
-        .domain(d3.extent(data, d => d[specialFields.mortality]));
 }

@@ -62,10 +62,12 @@ document.getElementById("sexSlider").addEventListener("input", function () {
     const sexOptions = ["Tots", "M", "F"];
     filtDict.sex = sexOptions[+this.value];
 
-    // Apliquem filtres i actualitzem el gràfic
+    // Apliquem filtres i actualitzem el gràfic si no estem en mode narrativa
     mortalityThreshold = 0;
-    applyFilter();
-    updateChart();
+    if(!storyMode) {
+        applyFilter();
+        updateChart();
+    }
 });
 
 /**
@@ -78,10 +80,12 @@ document.getElementById("ageSlider").addEventListener("input", function () {
     const ageOptions = ["Totes", "Y_LT15", "Y15-29", "Y30-44", "Y45-64", "Y_GE65"];
     filtDict.age = ageOptions[+this.value];
 
-    // Apliquem filtres i actualitzem el gràfic
+    // Apliquem filtres i actualitzem el gràfic si no estem en mode narrativa
     mortalityThreshold = 0;
-    applyFilter();
-    updateChart();
+    if(!storyMode){
+        applyFilter();
+        updateChart();
+    }
 });
 
 
@@ -91,13 +95,18 @@ document.getElementById("ageSlider").addEventListener("input", function () {
  */
 document.getElementById("diseaseSlider").addEventListener("input", function () {
 
-    // Obtenim el valor de la malaltia
-    filtDict.Disease_type = diseaseList[+this.value];
+    if(!firstRender){
+        // Obtenim el valor de la malaltia
+        filtDict.Disease_type = diseaseList[+this.value];
 
-    // Apliquem filtres i actualitzem el gràfic
-    mortalityThreshold = 0;
-    applyFilter();
-    updateChart();
+        // Apliquem filtres i actualitzem el gràfic si no estem en mode narrativa
+        mortalityThreshold = 0;
+        if(!storyMode) {
+            applyFilter();
+            updateChart();
+        }
+    }
+
 });
 
 /**
@@ -111,12 +120,16 @@ document.getElementById("pollutantSlider").addEventListener("input", event => {
         const index = (pollutantList.length - 1) - +event.target.value;
         currentPollutant = pollutantList[index];
 
-        // Actualitzem la llegenda de l'escala de les abscisses
-        document.querySelector(".x-label")
-            .textContent = `${currentPollutant.replace("_", ".")} - emissions per càpita (tones/habitant)`;
+        // Actualitzem la llegenda de l'escala de les abscisses si no és la primera càrrega
+        if (!firstRender){
+            document.querySelector(".x-label")
+                .textContent = `${currentPollutant.replace("_", ".")} - emissions per càpita (kg/habitant)`;
+        }
 
-        // Actualitzem el gràfic
-        updateChart();
+        // Actualitzem el gràfic si no estem en mode narrativa
+        if(!storyMode) {
+            updateChart();
+        }
     }
 });
 
@@ -144,9 +157,11 @@ document.getElementById("xModeSlider").addEventListener("input", event => {
         index = (pollutantList.length - 1) - +document.getElementById("pollutantSlider").value;
         currentPollutant = pollutantList[index];
 
-        // Actualitzem el literal del valor de l'eix de les X
-        document.querySelector(".x-label").textContent =
-            `${currentPollutant.replace("_", ".")} - emissions per càpita (tones/habitant)`;
+        // Actualitzem el literal del valor de l'eix de les X si no és la primera carrega
+        if (!firstRender) {
+            document.querySelector(".x-label").textContent =
+                `${currentPollutant.replace("_", ".")} - emissions per càpita (kg/habitant)`;
+        }
 
     } else{
         // Si no estem amb contaminants, actualitzem l'slider dels contaminants a desactivat
@@ -160,8 +175,10 @@ document.getElementById("xModeSlider").addEventListener("input", event => {
         document.querySelector(".x-label").textContent = "PIB per càpita (€)";
     }
 
-    // Actualitzem el gràfic
-    updateChart();
+    // Actualitzem el gràfic si no estem en mode narrativa
+    if(!storyMode){
+        updateChart();
+    }
 });
 
 /**
@@ -207,34 +224,49 @@ function setPibSlider() {
     // Constants de l'eslider i les seves etiquetes
     const pibSlider = document.getElementById("pibSlider");
     const pibLabels = document.getElementById("pibLabels");
+    let minValue = globalPIBMin;
+    let maxValue = globalPIBMax;
+    let message = "PIB per càpita";
+    let step = 1000;
+    let formatLabel = v => formatEuro(v);
+    let value = null;
+    let maxAllowed = globalPIBMax;
     let divSlider = null;
 
     // Guardem el valor seleccionat per si l'usuari el selecciona i així no es perd a l'actualitzar
     const previousPibValue = pibSlider.value;
 
+    if(storyMode && currentMode === "emissions"){
+        minValue = globalPollMin;
+        maxValue = globalPollMax;
+        message = "Emissions (kg/hab)"
+        step = (maxValue - minValue) / 100;
+        formatLabel = v => v.toFixed(0);
+        maxAllowed = maxValue;
+    }
+
 
     // Si els valors mínim i màxim de l'escala no estan definits mostrem un missatge. Això és perquè
     // el conjunt filtrat pot no retornar dades.
 
-    if(isNaN(globalPIBMin) || isNaN(globalPIBMax))
+    if(isNaN(minValue) || isNaN(maxValue))
     {
         document.getElementById("pibSliderTitle").textContent = "Sense dades";
     } else {
         // En cas contrari, actualitzem l'slider
-        document.getElementById("pibSliderTitle").textContent = "PIB per càpita";
-        pibSlider.min = globalPIBMin;
-        pibSlider.max = globalPIBMax;
-        pibSlider.step = 1000;
-        pibSlider.step = 1000;
+        document.getElementById("pibSliderTitle").textContent = message;
+        pibSlider.min = minValue;
+        pibSlider.max = maxValue;
+        pibSlider.step = step;
 
         // Si l’usuari ha tocat el slider, mantenim el seu valor
         if (pibSliderSelected) {
-            pibSlider.value = Math.min(previousPibValue, globalPIBMax);
+            pibSlider.value = Math.min(previousPibValue, maxAllowed);
             currentPIBThreshold = +pibSlider.value;
         } else {
             // Si no l’ha tocat, el posem al màxim
-            pibSlider.value = globalPIBMax;
-            currentPIBThreshold = globalPIBMax;
+            pibSlider.value = maxAllowed;
+            currentPIBThreshold = maxAllowed;
         }
 
         // Inicialitzem en blanc
@@ -242,9 +274,10 @@ function setPibSlider() {
 
         // Assignem les etiquetes
         for (let i = 0; i < pibSliderSteps; i++) {
+            value = maxValue - i * ((maxValue - minValue) / (pibSliderSteps - 1));
             divSlider = document.createElement("div");
             divSlider.className = "pibLabel";
-            divSlider.textContent = formatEuro(globalPIBMax - i * ((globalPIBMax - globalPIBMin) / (pibSliderSteps - 1)));
+            divSlider.textContent = formatLabel(value);
             pibLabels.appendChild(divSlider);
         }
     }
@@ -253,12 +286,12 @@ function setPibSlider() {
 /**
  * Gestiona els colors de les etiquetes de l'slider del PIB.
  */
-function setPibSliderColors(){
+function setPibSliderColors(scale, minValue, maxValue){
 
     // Si l'eslider està a dalt de tot
     if(!pibSliderSelected && !isPlaying){
         const pibSlider = document.getElementById("pibSlider");
-        pibSlider.style.background = `linear-gradient(to top, ${pibColorScale(globalPIBMin)}, ${pibColorScale(globalPIBMax)})`;
+        pibSlider.style.background = `linear-gradient(to top, ${scale(minValue)}, ${scale(maxValue)})`;
     }
 
 }
