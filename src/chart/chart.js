@@ -16,6 +16,7 @@
  */
 function setupChart(width, height, margin) {
 
+    let xValue =`${currentPollutant.replace("_", " ")} — emissions per càpita (kg/habitant)`;
     // Inicialitzem el dibuix del gràfic
     innerWidth = width - margin.left - margin.right;
     innerHeight = height - margin.top - margin.bottom;
@@ -47,13 +48,18 @@ function setupChart(width, height, margin) {
         .attr("class", "y-axis")
         .call(d3.axisLeft(y).tickFormat(formatSmart));
 
+    // En funció del mode, la llegenda de les x serà d'emissions o PIB
+    if(currentMode === "pib"){
+        xValue = "PIB per càpita (€)";
+    }
+
     // Creació de les etiquetes
     chart.append("text")
         .attr("class", "x-label")
         .attr("x", innerWidth / 2)
         .attr("y", innerHeight + 40)
         .attr("text-anchor", "middle")
-        .text(`${currentPollutant.replace("_", " ")} — emissions per càpita (kg/habitant)`);
+        .text(xValue);
 
     chart.append("text")
         .attr("class", "y-label")

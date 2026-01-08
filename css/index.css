@@ -69,6 +69,7 @@ body {
     margin-top:150px;
     padding-bottom: 50px;
     text-align: center;
+    width: 1200px;
 }
 
 .conclusions-inactive{
@@ -81,7 +82,7 @@ body {
 }
 
 .conclusions-list{
-    width: 1000px;
+    width: 1200px;
     text-align: justify;
 }
 

@@ -24,6 +24,9 @@ const pibSectionScroll = document.getElementById("pib-section-scroll")
 document.getElementById("storySliderPOLL").addEventListener("input", checkSlider);
 document.getElementById("storySliderPIB").addEventListener("input", checkSlider);
 
+/*Iniciem el slider abans per si es carrega des de mòbil, ja que es veurà tota la pantalla*/
+iframePOLL.contentWindow.postMessage({ level: 0 }, "*");
+
 
 /**
  * Recull els nivells de l'slider, activa les caixes i actualitza el gràfic i el text de la història
@@ -83,16 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("storySliderPOLL").classList.add("slider-blink");
     document.getElementById("storySliderPIB").classList.add("slider-blink");
 });
-
-/**
- * Per si es carrega des de un mòbil, necessari perquè es vegi el gràfic de contaminants
- */
-const esMobil = window.matchMedia("(max-width: 768px)").matches;
-
-if (esMobil) {
-    iframePOLL.contentWindow.postMessage({ level: 0 }, "*");
-}
-
 
 /**
  * Fa que les seccions de la narrativa apareguin a mesura que es fa scroll.
