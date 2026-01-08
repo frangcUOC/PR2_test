@@ -225,7 +225,7 @@ function updateAxis(){
     // Actualitzem valors de les escales
     chart.select(".x-axis")
         .call(d3.axisBottom(x).tickFormat(formatMilesNoDec));
-    
+
     chart.select(".y-axis")
         .call(d3.axisLeft(y).tickFormat(formatSmart));
 }

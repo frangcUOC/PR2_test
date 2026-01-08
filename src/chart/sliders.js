@@ -144,6 +144,7 @@ document.getElementById("xModeSlider").addEventListener("input", event => {
 
     // Assignem el mode actual
     const modes = ["emissions", "pib"];
+    let textValue = null;
     currentMode = modes[+event.target.value]
 
     // Estils del slider quan estem en mode emissions
@@ -157,11 +158,7 @@ document.getElementById("xModeSlider").addEventListener("input", event => {
         index = (pollutantList.length - 1) - +document.getElementById("pollutantSlider").value;
         currentPollutant = pollutantList[index];
 
-        // Actualitzem el literal del valor de l'eix de les X si no és la primera carrega
-        if (!firstRender) {
-            document.querySelector(".x-label").textContent =
-                `${currentPollutant.replace("_", ".")} - emissions per càpita (kg/habitant)`;
-        }
+        textValue = `${currentPollutant.replace("_", ".")} - emissions per càpita (kg/habitant)`;
 
     } else{
         // Si no estem amb contaminants, actualitzem l'slider dels contaminants a desactivat
@@ -172,7 +169,12 @@ document.getElementById("xModeSlider").addEventListener("input", event => {
 
         // Actualitzem l'eix de les X
         currentPollutant = "PIB_per_capita";
-        document.querySelector(".x-label").textContent = "PIB per càpita (€)";
+        textValue = "PIB per càpita (€)";
+    }
+
+    // Actualitzem el literal del valor de l'eix de les X si no és la primera carrega
+    if(!firstRender){
+        document.querySelector(".x-label").textContent = textValue;
     }
 
     // Actualitzem el gràfic si no estem en mode narrativa
