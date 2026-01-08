@@ -46,23 +46,23 @@ function updateDeathNumbers() {
  */
 function checkMortalityThreshold() {
 
-    // Si el paràmetre està a 0 no es ressaltarà cap punt
+    // Si el paràmetre està a 0 o a null voldrà dir que no estem en mode narratiu, així que establirem
+    // un llindar del 90%.
 
     if(currentMaxMortality != null){
-        if(mortalityThreshold > 0){
-            // Punts que han excedit el llindar
-            const exceeded = visibleData.filter(d => d[specialFields.mortality] > mortalityThreshold);
-
-            // Si hem obtingut més de 0 punts que han excedit
-            if (exceeded.length > 0) {
-                // Els destaquem
-                highlightPoints(exceeded);
-            } else {
-                // En cas contrari, netegem
-                clearHighlightedPoints();
-            }
-        } else if (!storyMode){
+        if(!storyMode){
             mortalityThreshold = +currentMaxMortality * 0.9;
+        }
+        // Punts que han excedit el llindar
+        const exceeded = visibleData.filter(d => d[specialFields.mortality] > mortalityThreshold);
+
+        // Si hem obtingut més de 0 punts que han excedit
+        if (exceeded.length > 0) {
+            // Els destaquem
+            highlightPoints(exceeded);
+        } else {
+            // En cas contrari, netegem
+            clearHighlightedPoints();
         }
     }
 

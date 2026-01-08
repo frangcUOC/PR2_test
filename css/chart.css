@@ -24,7 +24,7 @@ body {
     position: relative;
     width: 100%;
     max-width: 1024px;
-    margin: 0 auto;
+    margin: 30px auto 0 auto;
     right: 200px;
 }
 
@@ -94,7 +94,6 @@ svg text {
     font-weight: bold;
     color: #1f2d3a;
 }
-
 
 /* Estils dels filtre de contaminant i PIB*/
 #basicFilters {

@@ -10,10 +10,12 @@
  * - Actualitza el gràfic i el div de les històries.
  */
 
-// Variables globals per l'slider de les narratives
+// Variables globals per la interacció amb l'slider de les narratives
 let maxActivated = 0;
 const iframePOLL = document.getElementById("iframeObjectPOLL");
 const iframePIB  = document.getElementById("iframeObjectPIB");
+const pollSectionScroll = document.getElementById("poll-section-scroll");
+const pibSectionScroll = document.getElementById("pib-section-scroll")
 
 
 /**
@@ -22,13 +24,6 @@ const iframePIB  = document.getElementById("iframeObjectPIB");
 document.getElementById("storySliderPOLL").addEventListener("input", checkSlider);
 document.getElementById("storySliderPIB").addEventListener("input", checkSlider);
 
-iframePOLL.addEventListener("load", () => {
-    iframePOLL.contentWindow.postMessage({ level: 0 }, "*");
-});
-
-iframePIB.addEventListener("load", () => {
-    iframePIB.contentWindow.postMessage({ level: 5 }, "*");
-});
 
 /**
  * Recull els nivells de l'slider, activa les caixes i actualitza el gràfic i el text de la història
@@ -79,6 +74,9 @@ function checkSlider() {
  * en carregar la pàgina.
  */
 document.addEventListener("DOMContentLoaded", function () {
+    // Situem la pàgina al principi de tot
+    window.scrollTo(0, 0);
+
     // Activem el parpelleig en carregar
     document.getElementById("storySliderPOLL").classList.add("slider-blink");
     document.getElementById("storySliderPIB").classList.add("slider-blink");
@@ -125,6 +123,39 @@ const conclusionsObserver = new IntersectionObserver((entries) => {
 
 if (conclusionsSection) {
     conclusionsObserver.observe(conclusionsSection);
+}
+
+
+/**
+ * Carrega els gràfics quan l'usuari arriba a la secció corresponent
+ */
+
+// Quan s'arriba a la secció de contaminants
+const pollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            iframePOLL.contentWindow.postMessage({ level: 0 }, "*");
+            pollObserver.disconnect(); // només un cop
+        }
+    });
+}, { threshold: 0.4 });
+
+// Quan s'arriba a la secció del PIB
+const pibObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            iframePIB.contentWindow.postMessage({ level: 5 }, "*");
+            pibObserver.disconnect(); // només un cop
+        }
+    });
+}, { threshold: 0.4 });
+
+if (pibSectionScroll) {
+    pibObserver.observe(pibSectionScroll);
+}
+
+if (pollSectionScroll) {
+    pollObserver.observe(pollSectionScroll);
 }
 
 
