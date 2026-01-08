@@ -27,7 +27,6 @@ let innerWidth = null;
 let innerHeight = null;
 let svg = null;
 let chart = null;
-let pibColorScale = null;
 let color1 = "#9eadd1";
 let color2 = "#06194e";
 let tooltip = null;

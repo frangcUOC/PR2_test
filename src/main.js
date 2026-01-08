@@ -24,10 +24,6 @@ const pibSectionScroll = document.getElementById("pib-section-scroll")
 document.getElementById("storySliderPOLL").addEventListener("input", checkSlider);
 document.getElementById("storySliderPIB").addEventListener("input", checkSlider);
 
-/*Iniciem el slider abans per si es carrega des de mòbil, ja que es veurà tota la pantalla*/
-iframePOLL.contentWindow.postMessage({ level: 0 }, "*");
-
-
 /**
  * Recull els nivells de l'slider, activa les caixes i actualitza el gràfic i el text de la història
  */
@@ -86,6 +82,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("storySliderPOLL").classList.add("slider-blink");
     document.getElementById("storySliderPIB").classList.add("slider-blink");
 });
+
+window.addEventListener("load", () => {
+    iframePOLL.contentWindow.postMessage({ level: 0 }, "*");
+    iframePIB.contentWindow.postMessage({ level: 5 }, "*");
+});
+
 
 /**
  * Fa que les seccions de la narrativa apareguin a mesura que es fa scroll.
@@ -155,13 +157,14 @@ const pibObserver = new IntersectionObserver((entries) => {
     });
 }, { threshold: 0.4 });
 
+if (pollSectionScroll) {
+    pollObserver.observe(pollSectionScroll);
+}
+
 if (pibSectionScroll) {
     pibObserver.observe(pibSectionScroll);
 }
 
-if (pollSectionScroll) {
-    pollObserver.observe(pollSectionScroll);
-}
 
 
 
