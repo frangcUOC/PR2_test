@@ -56,8 +56,10 @@ function preLoad(){
     };
     //Assignem el contaminant actual mitjançant el seu slider
     currentPollutant = pollutantList[(pollutantList.length - 1) - (+document.getElementById("pollutantSlider").value)];
-    //Amb les dades bàsiques, es crea l'slider vertical d'emissions
+
+    //Amb les dades bàsiques, es crea l'slider vertical d'emissions i de malalties
     setPollutantSlider();
+    setDiseasesSlider();
 
 }
 

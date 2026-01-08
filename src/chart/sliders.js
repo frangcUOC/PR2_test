@@ -106,7 +106,6 @@ document.getElementById("diseaseSlider").addEventListener("input", function () {
             updateChart();
         }
     }
-
 });
 
 /**

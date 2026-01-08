@@ -235,6 +235,7 @@ iframe {
             #9fb4cc 80%,
             #9fb4cc 100%
     );
+    height: 600px;
 }
 
 /* Slider PIB (4 nivells) */
@@ -274,7 +275,7 @@ iframe {
     -webkit-appearance: none;
     background: #4a6fa3;
     width: 40px;
-    height: 100px;
+    height: 125px;
     border-radius: 8px;
     margin-left: -12px;
 }
@@ -284,7 +285,7 @@ iframe {
 #storySliderPIB::-moz-range-thumb {
     background: #4a6fa3;
     width: 40px;
-    height: 100px;
+    height: 125px;
     border: none;
 }
 
@@ -297,14 +298,7 @@ iframe {
     margin-left: -12px;
 }
 
-#storySliderPIB::-webkit-slider-thumb{
-    height: 125px;
-}
 
-/* Punt (thumb) - (Firefox) */
-#storySliderPIB::-moz-range-thumb{
-    height: 125px;
-}
 
 /* Caixes per a les narratives*/
 
@@ -318,18 +312,19 @@ iframe {
 
 .story-box {
     position: absolute;
-    width: 620px;
+    width: 700px;
     padding: 15px;
     background: transparent;
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 /*Caixes per la primera secció*/
-.story-box[data-level="0"] { top: 0px; }
-.story-box[data-level="1"] { top: 100px; }
-.story-box[data-level="2"] { top: 200px; }
-.story-box[data-level="3"] { top: 300px; }
-.story-box[data-level="4"] { top: 400px; }
+.story-box[data-level="0"] { top: -45px; }
+.story-box[data-level="1"] { top: 75px; }
+.story-box[data-level="2"] { top: 195px; }
+.story-box[data-level="3"] { top: 315px; }
+.story-box[data-level="4"] { top: 435px; }
+
 
 /*Caixes per a la segona secció*/
 .story-box[data-level="5"] { top: 5px; }

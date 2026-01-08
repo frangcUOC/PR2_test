@@ -51,9 +51,6 @@ function init(width, height, margin, options = null, mode = false){
         // Apliquem filtres
         applyFilter();
 
-        // Slider vertical de malalties
-        setDiseasesSlider();
-
         // Dibuixem gràfic
         setupChart(width, height, margin);
 
