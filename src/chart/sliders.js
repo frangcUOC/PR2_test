@@ -28,7 +28,9 @@ document.getElementById("yearSlider").addEventListener("input", event => {
     currentYear = Math.round(event.target.value);
 
     // Apliquem filtres, actualitzem l'slider del pib i el gràfic
-    mortalityThreshold = 0;
+    if(!storyMode){
+        mortalityThreshold = 0;
+    }
     applyFilter();
     setPibSlider();
     updateChart();
@@ -63,8 +65,8 @@ document.getElementById("sexSlider").addEventListener("input", function () {
     filtDict.sex = sexOptions[+this.value];
 
     // Apliquem filtres i actualitzem el gràfic si no estem en mode narrativa
-    mortalityThreshold = 0;
     if(!storyMode) {
+        mortalityThreshold = 0;
         applyFilter();
         updateChart();
     }
@@ -81,8 +83,8 @@ document.getElementById("ageSlider").addEventListener("input", function () {
     filtDict.age = ageOptions[+this.value];
 
     // Apliquem filtres i actualitzem el gràfic si no estem en mode narrativa
-    mortalityThreshold = 0;
     if(!storyMode){
+        mortalityThreshold = 0;
         applyFilter();
         updateChart();
     }
@@ -100,8 +102,8 @@ document.getElementById("diseaseSlider").addEventListener("input", function () {
         filtDict.Disease_type = diseaseList[+this.value];
 
         // Apliquem filtres i actualitzem el gràfic si no estem en mode narrativa
-        mortalityThreshold = 0;
         if(!storyMode) {
+            mortalityThreshold = 0;
             applyFilter();
             updateChart();
         }

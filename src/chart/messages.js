@@ -48,24 +48,24 @@ function checkMortalityThreshold() {
 
     // Si el paràmetre està a 0 no es ressaltarà cap punt
 
-    if (mortalityThreshold === 0 && currentMaxMortality != null){
-        mortalityThreshold = +currentMaxMortality * 0.9;
-    }
+    if(currentMaxMortality != null){
+        if(mortalityThreshold > 0){
+            // Punts que han excedit el llindar
+            const exceeded = visibleData.filter(d => d[specialFields.mortality] > mortalityThreshold);
 
-    if(mortalityThreshold > 0){
-
-        // Punts que han excedit el llindar
-        const exceeded = visibleData.filter(d => d[specialFields.mortality] > mortalityThreshold);
-
-        // Si hem obtingut més de 0 punts que han excedit
-        if (exceeded.length > 0) {
-            // Els destaquem
-            highlightPoints(exceeded);
-        } else {
-            // En cas contrari, netegem
-            clearHighlightedPoints();
+            // Si hem obtingut més de 0 punts que han excedit
+            if (exceeded.length > 0) {
+                // Els destaquem
+                highlightPoints(exceeded);
+            } else {
+                // En cas contrari, netegem
+                clearHighlightedPoints();
+            }
+        } else if (!storyMode){
+            mortalityThreshold = +currentMaxMortality * 0.9;
         }
     }
+
 }
 
 /**
